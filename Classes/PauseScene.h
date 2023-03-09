@@ -2,7 +2,6 @@
 #define PAUSESCENE_H
 
 #include "cocos2d.h"
-//#include "CowScene.h"
 #include "StartMenuScene.h"
 
 

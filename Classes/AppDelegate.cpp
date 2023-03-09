@@ -73,7 +73,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	// initialize director
 	auto director = Director::getInstance();
 	auto glview = director->getOpenGLView();
-	if(!glview) {
+	if (!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
 		glview = GLViewImpl::createWithRect("Cow Runner", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
@@ -81,8 +81,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
 #endif
 		director->setOpenGLView(glview);
 		glview->setIcon("res/cow_icon.png");
-		GLViewImpl* view = (GLViewImpl*)Director::getInstance()->getOpenGLView();
-		view->setFullscreen();
+		//GLViewImpl* view = (GLViewImpl*)Director::getInstance()->getOpenGLView();
+		//view->setFullscreen();
 	}
 
 	// turn on display FPS
@@ -103,7 +103,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 		director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
 	}
 	// if the frame's height is smaller than the height of medium size.
-	else	{
+	else {
 		director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
 	}
 

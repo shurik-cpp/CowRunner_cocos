@@ -27,8 +27,9 @@ bool PauseScene::init() {
 	Menu* menu = Menu::createWithArray(this->CreateMenuItems());
 	menu->alignItemsVertically();
 	menu->setPosition(Vec2(
-											origin.x + visibleSize.width/2,
-											origin.y + visibleSize.height - menu->getContentSize().height/4));
+						  origin.x + visibleSize.width/2,
+						  origin.y + visibleSize.height - menu->getContentSize().height/4)
+					  );
 	this->addChild(menu, 1);
 
 	return true;

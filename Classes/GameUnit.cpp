@@ -42,34 +42,38 @@ void GameUnit::updateUnitAnimation() {
 	sprite->runAction(Animate::create(animCache->getAnimation(anim_manager.GetAnimationName(state))));
 }
 
-void GameUnit::tick(isEvents& is_events, const float delta) {
-	if ((is_events.isKeyLeft && !is_events.isShiftKey) ||
-			(is_events.isKeyRight && !is_events.isShiftKey)) {
+void Cow::tick(isEvents& is_events, const float delta) {
+	if ((is_events.isKeyLeft && !is_events.isShiftKey)
+		|| (is_events.isKeyRight && !is_events.isShiftKey)) {
 		state = UnitState::WALK;
-	} else if ((is_events.isKeyLeft && is_events.isShiftKey) ||
-						 (is_events.isKeyRight && is_events.isShiftKey)) {
+	}
+	else if ((is_events.isKeyLeft && is_events.isShiftKey)
+			 || (is_events.isKeyRight && is_events.isShiftKey)) {
 		state = UnitState::RUN;
-	} else if ((!is_events.isKeyLeft && !is_events.isKeyRight) ||
-						 (is_events.isKeyLeft && is_events.isKeyRight)) {
+	}
+	else if ((!is_events.isKeyLeft && !is_events.isKeyRight)
+			 || (is_events.isKeyLeft && is_events.isKeyRight)) {
 		state = UnitState::STAND;
 	}
-
 
 	float cow_speed = 0; //350 * delta;
 	if (state == UnitState::WALK) {
 		cow_speed = 5;
-	} else if (state == UnitState::RUN) {
+	}
+	else if (state == UnitState::RUN) {
 		cow_speed = 12;
 	}
 
 	if (is_events.isKeyLeft && is_events.isKeyRight) {
-		// TODO корова мычит и воспроизводится анимация недовольной коровы (встает на дыбы? :D)
+		// TODO: корова мычит и воспроизводится анимация недовольной коровы (встает на дыбы? :D)
 		state = UnitState::STAND;
 		cow_speed = 0;
-	}	else if (is_events.isKeyLeft) {
+	}
+	else if (is_events.isKeyLeft) {
 		direction = UnitDirection::LEFT;
 		cow_speed *= -1;
-	} else if (is_events.isKeyRight) {
+	}
+	else if (is_events.isKeyRight) {
 		direction = UnitDirection::RIGHT;
 	}
 
@@ -100,7 +104,8 @@ void GameUnit::tick(isEvents& is_events, const float delta) {
 		if (jump_acceleration > 0) {
 			sprite->setPositionY(cow_posY + jump_acceleration);
 			jump_acceleration -= JUMP_DELTA;
-		} else {
+		}
+		else {
 			jump_status = UnitJumpStatus::DOWN;
 			jump_acceleration = 0;
 			is_events.is_change_animation = true;
@@ -125,6 +130,4 @@ void GameUnit::tick(isEvents& is_events, const float delta) {
 		is_events.is_change_animation = false;
 		updateUnitAnimation();
 	}
-
-
 }

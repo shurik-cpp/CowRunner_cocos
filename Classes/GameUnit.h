@@ -24,7 +24,9 @@ enum UnitState {
 
 class AnimationManager {
 public:
-	explicit AnimationManager(const std::string& name) : unit_name(name) {
+	explicit AnimationManager(const std::string& name)
+		: unit_name(name)
+	{
 		initNumberOfFramesAndDelays();
 		names_of_state[UnitState::STAND] = BuildAnimationName("stand");
 		names_of_state[UnitState::WAIT] = BuildAnimationName("wait");
@@ -35,7 +37,7 @@ public:
 
 	void SetState(const UnitState st) { state = st; }
 	int GetNumberOfFrames() const { return anims_frames_and_delays.at(state).first;	}
-	float GetAnimationDelay() const { return anims_frames_and_delays.at(state).second;	}
+	float GetAnimationDelay() const { return anims_frames_and_delays.at(state).second; }
 	std::string GetAnimationName(const UnitState st) const { return names_of_state.at(st); }
 
 
@@ -74,7 +76,8 @@ class GameUnit {
 public:
 	explicit GameUnit(const std::string& name)
 		: unit_name(name)
-		, anim_manager(name) { }
+		, anim_manager(name)
+	{ }
 
 	virtual ~GameUnit() {
 		//cocos2d::AnimationCache::getInstance()->destroyInstance();
@@ -85,9 +88,9 @@ public:
 	virtual void setSprite(cocos2d::Sprite* s) { sprite = s; }
 
 	virtual void initAnimations();
-	virtual void tick(isEvents& events, const float delta);
+	virtual void tick(isEvents& events, const float delta) = 0;
 
-private:
+protected:
 	enum UnitDirection { LEFT, RIGHT };
 	enum UnitJumpStatus { FLY, UP, DOWN, ON_LAND };
 
@@ -103,10 +106,20 @@ private:
 };
 
 class Cow : public GameUnit {
+public:
+	explicit Cow(const std::string& name)
+		: GameUnit(name)
+	{ }
+
 	void tick(isEvents& events, const float delta) override;
 };
 
 class Enemy : public GameUnit {
+public:
+	explicit Enemy(const std::string& name)
+		: GameUnit(name)
+	{ }
+
 	void tick(isEvents& events, const float delta) override;
 };
 

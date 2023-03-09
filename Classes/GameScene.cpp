@@ -25,7 +25,7 @@ Sprite* GameScene::BuildSprite(const UnitType type) {
 		case UnitType::APPLE:
 		case UnitType::ENEMY:
 			sprite->setPosition(Vec2(std::rand() % static_cast<int>(visibleSize.height),
-															 std::rand() % static_cast<int>(visibleSize.width)));
+									 std::rand() % static_cast<int>(visibleSize.width)));
 		break;
 	}
 
@@ -72,7 +72,7 @@ bool GameScene::init() {
 	grass_front->setPosition(grass_pos.x, grass_pos.y - 35);
 	this->addChild(grass_front, LayerType::FRONT);
 
-	cow = std::make_shared<GameUnit>("cow");
+	cow = std::make_shared<Cow>("cow");
 	cow->setSprite(BuildSprite(UnitType::COW));
 	cow->initAnimations();
 
@@ -110,6 +110,9 @@ bool GameScene::init() {
 			case EventKeyboard::KeyCode::KEY_SPACE:
 
 			break;
+
+			default:
+			break;
 		}
 		is_events.is_change_animation = true;
 	};
@@ -146,6 +149,9 @@ bool GameScene::init() {
 			break;
 			case EventKeyboard::KeyCode::KEY_SPACE:
 
+			break;
+
+			default:
 			break;
 		}
 		is_events.is_change_animation = true;

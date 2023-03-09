@@ -12,8 +12,8 @@ static void problemLoading(const char* filename) {
 }
 
 cocos2d::MenuItem* MenuBtnBuilder(const std::string& normalImage,
-																	const std::string& selectedImage,
-																	const cocos2d::ccMenuCallback& callback);
+								  const std::string& selectedImage,
+								  const cocos2d::ccMenuCallback& callback);
 
 class StartMenuScene : public cocos2d::Scene {
 public:
