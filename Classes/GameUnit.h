@@ -1,3 +1,4 @@
+#pragma once
 #ifndef GAMEUNIT_H
 #define GAMEUNIT_H
 
@@ -14,56 +15,62 @@ struct isEvents {
 	bool is_change_animation = false;
 };
 
-enum UnitState {
+enum class UnitState {
 	STAND,
 	WAIT,
 	WALK,
 	RUN,
-	JUMP
+	JUMP,
+	END_STATE
 };
+
+
 
 class AnimationManager {
 public:
 	explicit AnimationManager(const std::string& name)
 		: unit_name(name)
 	{
-		initNumberOfFramesAndDelays();
-		names_of_state[UnitState::STAND] = BuildAnimationName("stand");
-		names_of_state[UnitState::WAIT] = BuildAnimationName("wait");
-		names_of_state[UnitState::WALK] = BuildAnimationName("walk");
-		names_of_state[UnitState::RUN] = BuildAnimationName("run");
-		names_of_state[UnitState::JUMP] = BuildAnimationName("jump");
+		anims_frames_and_delays = GetAnimsFramesAndDelay(unit_name);
 	}
 
 	void SetState(const UnitState st) { state = st; }
-	int GetNumberOfFrames() const { return anims_frames_and_delays.at(state).first;	}
-	float GetAnimationDelay() const { return anims_frames_and_delays.at(state).second; }
-	std::string GetAnimationName(const UnitState st) const { return names_of_state.at(st); }
-
+	size_t GetNumberOfFrames() const { return anims_frames_and_delays.at(state).frame_count; }
+	float GetAnimationDelay() const { return anims_frames_and_delays.at(state).delay; }
+	std::string GetAnimationName(const UnitState state) const { return unit_name + "_" + UnitStateToString(state); }
 
 private:
 	std::string unit_name;
 	UnitState state;
 
-	std::unordered_map<UnitState, std::pair<int, float>> anims_frames_and_delays; // pair<количество кадров, задержка между кадрами>
-	std::unordered_map<UnitState, std::string> names_of_state;
+	struct AnimProperties {
+		size_t frame_count;
+		float delay;
+	};
 
-	void initNumberOfFramesAndDelays() {
-		if (unit_name == "cow") {
-			anims_frames_and_delays[UnitState::STAND] = {13, 0.08};
-			anims_frames_and_delays[UnitState::WALK] = {11, 0.07};
-			anims_frames_and_delays[UnitState::RUN] = {14, 0.02};
-			anims_frames_and_delays[UnitState::JUMP] = {0, 0};
-			anims_frames_and_delays[UnitState::WAIT] = {0, 0};
+	std::unordered_map<UnitState, AnimProperties> anims_frames_and_delays;
+	std::unordered_map<UnitState, std::string> anim_names_of_state;
+
+	std::string UnitStateToString(const UnitState state) const {
+		switch (state) {
+			case UnitState::STAND:
+				return "stand";
+			case UnitState::WAIT:
+				return "wait";
+			case UnitState::WALK:
+				return "walk";
+			case UnitState::RUN:
+				return "run";
+			case UnitState::JUMP:
+				return "jump";
+			default:
+				return "undefined_state";
 		}
-		else if (unit_name == "enemy") {
-			anims_frames_and_delays[UnitState::STAND] = {0, 0};
-			anims_frames_and_delays[UnitState::WALK] = {0, 0};
-			anims_frames_and_delays[UnitState::RUN] = {0, 0};
-			anims_frames_and_delays[UnitState::JUMP] = {0, 0};
-			anims_frames_and_delays[UnitState::WAIT] = {0, 0};
-		}
+		return "";
 	}
+
+	std::unordered_map<UnitState, AnimProperties> GetAnimsFramesAndDelay(const std::string& unit_name);
+	size_t GetAnimsFramesCount(const std::string& anim_name);
 
 	std::string BuildAnimationName(const std::string& action) const {
 		std::stringstream ss;
@@ -96,7 +103,7 @@ protected:
 
 	cocos2d::Sprite* sprite = nullptr;
 	UnitDirection direction = RIGHT;
-	UnitState state = STAND;
+	UnitState state = UnitState::STAND;
 	UnitJumpStatus jump_status = DOWN;
 	std::string unit_name;
 	AnimationManager anim_manager;
