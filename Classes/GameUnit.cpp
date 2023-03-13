@@ -80,7 +80,17 @@ void Cow::tick(isEvents& is_events, const float delta) {
 	}
 
 	sprite->setFlippedX(!static_cast<bool>(direction));
-	sprite->setPositionX(sprite->getPositionX() + cow_speed);
+
+	auto posX = sprite->getPositionX() + cow_speed;
+	auto sprite_size_X = sprite->getTextureRect().getMaxX();
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+
+	if (posX - sprite_size_X / 2 > visibleSize.width && direction == UnitDirection::RIGHT)
+		posX = 0 - sprite_size_X / 2;
+	else if (posX + sprite_size_X / 2 < 0 && direction == UnitDirection::LEFT)
+		posX = visibleSize.width + sprite_size_X / 2;
+
+	sprite->setPositionX(posX);
 
 
 	const float cow_posY = sprite->getPositionY();
