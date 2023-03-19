@@ -6,7 +6,8 @@
 #include <unordered_map>
 #include "cocos2d.h"
 
-struct isEvents {
+
+struct Events {
 	bool isKeyLeft = false;
 	bool isKeyRight = false;
 	bool isUpKey = false;
@@ -24,7 +25,7 @@ enum class UnitState {
 	END_STATE
 };
 
-
+std::string UnitStateToString(const UnitState state);
 
 class AnimationManager {
 public:
@@ -49,25 +50,6 @@ private:
 	};
 
 	std::unordered_map<UnitState, AnimProperties> anims_frames_and_delays;
-	std::unordered_map<UnitState, std::string> anim_names_of_state;
-
-	std::string UnitStateToString(const UnitState state) const {
-		switch (state) {
-			case UnitState::STAND:
-				return "stand";
-			case UnitState::WAIT:
-				return "wait";
-			case UnitState::WALK:
-				return "walk";
-			case UnitState::RUN:
-				return "run";
-			case UnitState::JUMP:
-				return "jump";
-			default:
-				return "undefined_state";
-		}
-		return "";
-	}
 
 	std::unordered_map<UnitState, AnimProperties> GetAnimsFramesAndDelay(const std::string& unit_name);
 	size_t GetAnimsFramesCount(const std::string& anim_name);
@@ -91,11 +73,11 @@ public:
 		CC_SAFE_DELETE(sprite);
 	}
 
-	virtual cocos2d::Sprite* getSprite() { return sprite; }
-	virtual void setSprite(cocos2d::Sprite* s) { sprite = s; }
+	virtual cocos2d::Sprite* GetSprite() { return sprite; }
+	virtual void SetSprite(cocos2d::Sprite* s) { sprite = s; }
 
-	virtual void initAnimations();
-	virtual void tick(isEvents& events, const float delta) = 0;
+	virtual void InitAnimations();
+	virtual void Tick(Events& events, const float delta) = 0;
 
 protected:
 	enum UnitDirection { LEFT, RIGHT };
@@ -109,25 +91,9 @@ protected:
 	AnimationManager anim_manager;
 
 	cocos2d::Animation* CreateAnimation(const UnitState action, const unsigned int loops);
-	void updateUnitAnimation();
+	void UpdateUnitAnimation();
 };
 
-class Cow : public GameUnit {
-public:
-	explicit Cow(const std::string& name)
-		: GameUnit(name)
-	{ }
 
-	void tick(isEvents& events, const float delta) override;
-};
-
-class Enemy : public GameUnit {
-public:
-	explicit Enemy(const std::string& name)
-		: GameUnit(name)
-	{ }
-
-	void tick(isEvents& events, const float delta) override;
-};
 
 #endif // GAMEUNIT_H

@@ -43,7 +43,7 @@ private:
 	cocos2d::TMXTiledMap* BuildMapLayer(int level);
 	cocos2d::Sprite* BuildSprite(const UnitType type);
 
-	isEvents is_events;
+	Events events;
 
 };
 

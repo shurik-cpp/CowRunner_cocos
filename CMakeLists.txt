@@ -61,6 +61,8 @@ list(APPEND GAME_SOURCE
 		 Classes/PauseScene.cpp
 		 Classes/GameScene.cpp
 		 Classes/GameUnit.cpp
+		 Classes/CowUnit.cpp
+		 Classes/EnemyUnit.cpp
 
      )
 list(APPEND GAME_HEADER
@@ -69,6 +71,8 @@ list(APPEND GAME_HEADER
 		 Classes/PauseScene.h
 		 Classes/GameScene.h
 		 Classes/GameUnit.h
+		 Classes/CowUnit.h
+		 Classes/EnemyUnit.h
 
      )
 

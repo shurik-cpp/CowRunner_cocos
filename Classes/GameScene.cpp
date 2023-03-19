@@ -1,4 +1,6 @@
 #include "GameScene.h"
+#include "CowUnit.h"
+#include "EnemyUnit.h"
 
 USING_NS_CC;
 
@@ -72,11 +74,11 @@ bool GameScene::init() {
 	grass_front->setPosition(grass_pos.x, grass_pos.y - 35);
 	this->addChild(grass_front, LayerType::FRONT);
 
-	cow = std::make_shared<Cow>("cow");
-	cow->setSprite(BuildSprite(UnitType::COW));
-	cow->initAnimations();
+	cow = std::make_shared<CowUnit>("cow");
+	cow->SetSprite(BuildSprite(UnitType::COW));
+	cow->InitAnimations();
 
-	this->addChild(cow->getSprite(), LayerType::SPRITES);
+	this->addChild(cow->GetSprite(), LayerType::SPRITES);
 
 	// creating a keyboard event listener
 	eventListener = EventListenerKeyboard::create();
@@ -86,26 +88,26 @@ bool GameScene::init() {
 			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 			case EventKeyboard::KeyCode::KEY_A:
 				//std::cout << "Pressed LEFT key\n";
-				is_events.isKeyLeft = true;
+				events.isKeyLeft = true;
 			break;
 			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 			case EventKeyboard::KeyCode::KEY_D:
 				//std::cout << "Pressed RIGHT key\n";
-				is_events.isKeyRight = true;
+				events.isKeyRight = true;
 			break;
 			case EventKeyboard::KeyCode::KEY_UP_ARROW:
 			case EventKeyboard::KeyCode::KEY_W:
 				//std::cout << "Pressed UP key\n";
-				is_events.isUpKey = true;
+				events.isUpKey = true;
 			break;
 			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 			case EventKeyboard::KeyCode::KEY_S:
 				//std::cout << "Pressed DOWN key\n";
-				is_events.isDownKey = true;
+				events.isDownKey = true;
 			break;
 			case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
 			case EventKeyboard::KeyCode::KEY_RIGHT_SHIFT:
-				is_events.isShiftKey = true;
+				events.isShiftKey = true;
 			break;
 			case EventKeyboard::KeyCode::KEY_SPACE:
 
@@ -114,7 +116,7 @@ bool GameScene::init() {
 			default:
 			break;
 		}
-		is_events.is_change_animation = true;
+		events.is_change_animation = true;
 	};
 
 	eventListener->onKeyReleased = [=](EventKeyboard::KeyCode keyCode, Event* event) {
@@ -123,26 +125,26 @@ bool GameScene::init() {
 			case EventKeyboard::KeyCode::KEY_LEFT_ARROW:
 			case EventKeyboard::KeyCode::KEY_A:
 				//std::cout << "Released LEFT key\n";
-				is_events.isKeyLeft = false;
+				events.isKeyLeft = false;
 			break;
 			case EventKeyboard::KeyCode::KEY_RIGHT_ARROW:
 			case EventKeyboard::KeyCode::KEY_D:
 				//std::cout << "Released RIGHT key\n";
-				is_events.isKeyRight = false;
+				events.isKeyRight = false;
 			break;
 			case EventKeyboard::KeyCode::KEY_UP_ARROW:
 			case EventKeyboard::KeyCode::KEY_W:
 				//std::cout << "Released UP key\n";
-				is_events.isUpKey = false;
+				events.isUpKey = false;
 			break;
 			case EventKeyboard::KeyCode::KEY_DOWN_ARROW:
 			case EventKeyboard::KeyCode::KEY_S:
 				//std::cout << "Released DOWN key\n";
-				is_events.isDownKey = false;
+				events.isDownKey = false;
 			break;
 			case EventKeyboard::KeyCode::KEY_LEFT_SHIFT:
 			case EventKeyboard::KeyCode::KEY_RIGHT_SHIFT:
-				is_events.isShiftKey = false;
+				events.isShiftKey = false;
 			break;
 			case EventKeyboard::KeyCode::KEY_ESCAPE:
 				Director::getInstance()->replaceScene(StartMenuScene::createScene());
@@ -154,10 +156,10 @@ bool GameScene::init() {
 			default:
 			break;
 		}
-		is_events.is_change_animation = true;
+		events.is_change_animation = true;
 	};
 
-	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, cow->getSprite());
+	this->_eventDispatcher->addEventListenerWithSceneGraphPriority(eventListener, cow->GetSprite());
 
 	// Запускаем игровой цикл
 	// Как только игровой цикл открывается, он вызывает функцию GameScene::update(float dt)
@@ -181,7 +183,7 @@ bool GameScene::init() {
 // В двух словах, при покадровом перемещении выражайте свои единицы в секундах,
 // а затем умножайте их на дельту, переданную в функцию обновления.
 void GameScene::update(float delta) {
-	cow->tick(is_events, delta);
+	cow->Tick(events, delta);
 
 //	auto fruit_sprite = BuildSprite(UnitType::APPLE);
 //	mapLayer->addChild(fruit_sprite, LayerType::SPRITES);
